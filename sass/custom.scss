@@ -1,0 +1,222 @@
+/* Mixins */
+
+/* Fool-proof @font-face */ 
+/* Based on http://coding.smashingmagazine.com/2013/02/14/setting-weights-and-styles-at-font-face-declaration/ */
+
+@mixin font-face($font-family, $file-path, $font-weight, $font-style) {
+  @font-face {
+    font-family: $font-family;
+      src: url('#{$file-path}.eot');
+      src: url('#{$file-path}.eot?#iefix') format('embedded-opentype'),
+           url('#{$file-path}.woff') format('woff'),
+           url('#{$file-path}.ttf') format('truetype'),
+           url('#{$file-path}.svg##{$font-family}') format('svg');
+    font-weight: $font-weight;
+    font-style: $font-style;
+  }
+  // Chrome for Windows rendering fix: http://www.adtrak.co.uk/blog/font-face-chrome-rendering/
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
+    @font-face {
+      font-family: $font-family;
+        src: url('#{$file-path}.svg##{$font-family}') format('svg');
+    }
+  }
+}
+
+@mixin text-lower-light { font-family: 'Montserrat Light'; font-size: $font-size-lower; color: $text-color-light;}
+@mixin text-lower-dark { font-family: 'Montserrat Light'; font-size: $font-size-lower; color: $text-color-dark;}
+@mixin text-medium-light { font-family: 'Montserrat Regular'; font-size: $font-size-medium; color: $text-color-light;}
+@mixin text-medium-dark { font-family: 'Montserrat Regular'; font-size: $font-size-medium; color: $text-color-dark;}
+
+@mixin text-fa-medium { font-family: 'FontAwesome'; font-size: $font-size-medium; color: $text-color-light;}
+
+/* Includes */
+@include font-face ('FontAwesome', '../fonts/fontawesome-webfont', 'normal', 'serif'); 
+@include font-face ('Montserrat Light', '../fonts/montserrat-light-webfont', 'normal', 'serif');
+@include font-face ('Montserrat Regular', '../fonts/montserrat-regular-webfont', 'normal', 'serif');
+
+/* Variables */
+$text-color-light: #cccbcb; 
+$text-color-dark: #000; 
+
+$font-size-lower: 2.2rem;  /*30px*/
+$font-size-medium: 2.8rem;  /*36px*/
+$font-size-upper: 3.5rem;  /*60px*/
+
+
+/* Bootstrap Overrides */
+.jumbotron { background-color:transparent; padding-top: 185px; }
+.navbar { min-height: 155px;}
+.navbar-nav { margin: 50px 0 0 15px;}
+.navbar-inverse { background-color: #160c15; border: none;}
+.navbar-inverse .navbar-nav, 
+.social_network { 			
+					li > a { @include text-fa-medium; border:1px solid #e0e0e0; border-radius:0; background-color: #202020; 
+					transition: border 0.5s linear, border-radius 0.5s linear, background-color 0.5s linear, color 0.5s linear; min-width: 54px; text-align: center; padding: 10px 5px; display:block;}
+					li > a:hover,
+					li > a:active,
+					li > a:focus,
+					li .navbar--selected { border-radius:8px; background-color:#6a6a6a; color:#fff; border:1px solid #160c15;}	
+			}
+.img-responsive, 
+.thumbnail > img, 
+.thumbnail a > img, 
+.carousel-inner > .item > img, 
+.carousel-inner > .item > a > img { width: auto; margin: 0 auto; max-height: 400px;}	
+.carousel { width: auto; max-width: 75%; margin: 0 auto; overflow:hidden;}
+.carousel-inner { vertical-align: middle; display: table;}
+.carousel-indicators li { min-width: 5px; float: none;}
+
+
+/* Traditional CSS Classes */
+body { background: url(../images/page1.jpg) no-repeat center top fixed; height: 1080px; width: 100%; overflow-x: hidden;}
+img { height: auto; width: 100%;}
+a { 
+	text-decoration:none; outline:none; 
+	&:hover { text-decoration:none;}
+}
+:target { content: ""; display: inline-block; height: 190px; margin: -190px 0 0; visibility: hidden;}	
+article	{	a { padding: 5px 8px;transition: background-color 0.4s linear, color 0.4s linear, opacity 0.4s linear;}
+			a:hover { color:#000; background-color:#e5e5e5; opacity:.5;}
+			p { @include text-lower-light; background: rgba(14, 14, 17, .6); display:inline-block; }		
+			p span { @include text-medium-light; }
+			ul { display: inline-block; list-style:none; padding: 0 0 20px 0; margin-bottom:20px; width: 100%; }				
+			li { clear: right; display: block; float: left; /*min-width: 45%;*/ height:315px; margin-right:20px; }			
+			li:last-child { height:auto;}				
+			li span { @include text-medium-light; padding: 3px 10px 5px; display: table; border-bottom: 1px solid #ccc; margin-bottom: 20px;}
+			li ul li, a { @include text-lower-light; background:none; margin-bottom: 0; margin-top: 0; }			
+			li ul { margin-left:25px; border:0;}
+			li ul li { display: list-item; list-style: disc; height: auto; min-height: 100%; width: auto; min-width: 100%; clear: none; float: none;}
+			h2  {@include text-medium-dark; background: rgba(224, 224, 224, 1); padding: 3px 10px 5px; display: table; margin:30px 0 20px 0;}
+		}
+footer {	margin: 100px 0 40px 0;
+			p { color: #cccbcb;}
+		}		
+.margin-bottom-45 { margin-bottom:45px;}
+.thumb { margin-bottom: 30px;}
+.social_network {	background-color: transparent; right: 15px; position: absolute; bottom: 0;
+ 					li { display: inline-block; list-style:none;}				
+					li > a { min-width: 50px; padding: 5px 5px;}
+				}				
+.projects, 
+.skills,
+.gallery { margin-bottom:75px;}		  
+.projects { 
+			li { height:auto;}
+		}	
+ .skills {
+	 		li:nth-child(5) { height:auto;} 
+	 		li:nth-child(5) ul, li:nth-child(6) ul { margin-bottom:0; padding-bottom:0;}
+		}
+.gallery .carousel {
+			a:hover { background-color:#160c15; }
+		}		
+										
+
+/* Media Queries */
+@media (min-width: 768px) and (max-width: 1920px) {
+	article {
+		p span { font-size: 2.5rem;}
+	}
+	.navbar-nav, .social_network { margin: 0; float:right;	
+			li { margin: 45px 8px 0 8px;}
+			li > a span { display:none;}
+	}
+	.navbar-brand { float:none; display:inline-block; min-height:150px;  	
+					img	{ max-width: 355px;}
+	}
+	.jumbotron, .about_me { 
+			p	{ font-size: 2rem; display:inline; margin: 0; padding: 5px 2px; line-height:3.55rem}
+	}
+	.tooltip { width:130px;}	
+}
+
+@media only screen and (min-width: 541px) and (max-width: 1199px) {
+	article {
+			li { min-width: 45%;} 
+	}
+}
+
+@media (max-width: 767px) {
+	article {
+			h2 { display:block; text-align:center; }
+			li { height: auto;} 
+	}
+	footer { margin:0;
+			p { text-align: center; margin: 15px 0 20px 0; color: #cccbcb;}	
+	}
+	.img-responsive, 
+	.thumbnail > img, 
+	.thumbnail a > img, 
+	.carousel-inner > .item > img, 
+	.carousel-inner > .item > a > img { width: 100%;}	
+	.navbar-collapse { border: 0; box-shadow: none;}
+	.navbar-brand { min-height:150px;
+					img	{ max-width: 355px;}
+	} 
+	.navbar-nav { margin: 0}	 
+	.navbar-inverse {
+			.navbar-nav > li > a { text-align:left; font-family: Montserrat Light; font-size: 1.8rem; border-bottom: 1px solid #cccbcb; transition: initial; min-width: 100%; background-color: transparent; 			
+				border-top:0; border-right:0; border-left:0;}
+			.navbar-nav > li > a i { width:50px; text-align: center;}
+			.navbar-nav > li > a:hover, 
+			.navbar-nav > li > a:active, 
+			.navbar-nav > li > a:focus, 
+			.navbar-nav > li .navbar--selected { border-radius: 0; background-color: #202020; border-bottom: 1px solid #cccbcb; padding: 9px 5px 10px 4px;}	
+	}
+	.tooltip { display:none!important;}	
+	.social_network { margin: 0 auto; width: 100%; position: static; text-align: center; padding:30px 0 0 0;
+			li { margin:0 10px;}
+	}	
+	.skills li:nth-child(5) ul, .skills li:nth-child(6) ul {
+		margin-bottom: 20px; 
+		padding-bottom: 20px; 
+	}	
+	.about_me { margin-bottom:0;}
+}
+
+@media (max-width: 540px) {
+	article { 			
+			p span { font-size:2.3rem;}		 		
+			ul { padding:0;}
+			li { display: inline-block; float: left; min-width: 100%; width: 100%; height: auto;}		
+			li span { font-size:2.5rem; background: transparent; border-bottom: 1px solid #ccc; color:$text-color-light; }	
+			span { width: 100%; text-align: center;}		
+	}	
+	img { height: auto; width: 75%; max-width:75%;} 
+	.navbar { min-height: 150px;}
+	.navbar-brand { float:none; display:block;}  	
+	.jumbotron { padding-bottom: 0; margin-bottom: 0;}
+	.jumbotron, .about_me {
+			p { font-size: 1.8rem;}
+	}	
+}
+
+@media (max-width: 460px) {	
+	article { margin-bottom:75px;
+			p span { font-size:2.1rem;}
+			li ul li, a { font-size: 1.5rem;}		
+	}	
+	.navbar, .navbar-brand { min-height: 120px;}
+	.navbar-collapse { margin-top: 0;}	
+	.jumbotron { padding-top: 150px;}
+	.jumbotron, .about_me {
+			p { font-size: 1.6rem;}
+	}	
+}
+
+@media (max-width: 320px) {
+	.jumbotron { padding-top: 120px;}
+	.navbar, .navbar-brand { min-height: 100px;}
+	.navbar-collapse { margin-top: 0;}
+}
+
+
+/* Cross Browser Fixes */
+/* IE10+ browser media queries */
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	/* IE10+ CSS styles go here */
+	h2 a:before, .jumbotron a:before { content: ""; display: inline-block; height: 190px; margin: -190px 0 0; visibility: hidden;}		
+}
+
+.ie9 h2 a:before, .ie9 .jumbotron a:before { content: ""; display: inline-block; height: 190px; margin: -190px 0 0; visibility: hidden;}
